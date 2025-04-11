@@ -1,55 +1,34 @@
-// page currently in use
 "use client";
-import React from "react";
+import React, { useState } from "react";
 import words from "@/data/Words 5";
-import  Keyboard  from "@/components/Keyboard";
+import Keyboard from "@/components/Keyboard";
 import BinaryBackground from "@/components/BinaryBackground";
 
-const Hackle = () => {
-  const [likes, setLikes] = React.useState(0);
-  const [guess, setGuess] = React.useState("");
-  const [result, setResult] = React.useState("");
-  const [grid, setGrid] = React.useState([""]);
-  const [usedLetters, setUsedLetters] = React.useState<Record<string, string>>({});
+const Hackle: React.FC = () => {
+  const [likes, setLikes] = useState<number>(0);
+  const [guess, setGuess] = useState<string>("");
+  const [result, setResult] = useState<string>("");
+  const [grid, setGrid] = useState<string[]>([""]);
+  const [usedLetters, setUsedLetters] = useState<Record<string, string>>({});
 
-  const targetValue = "ARRAY"; // TODO: set random val from dictionary per 24 hrs
+  const targetValue: string = "ARRAY"; // TODO: set random word daily
 
-  // UPDATED: isWordValid uses Gemini API call
-  // const isWordValid = async (word: string): Promise<boolean> => {
-  //   try {
-  //     const res = await fetch("/api/validate-word", {
-  //       method: "POST",
-  //       headers: {
-  //         "Content-Type": "application/json"
-  //       },
-  //       body: JSON.stringify({ word })
-  //     });
-
-  //     const data = await res.json();
-  //     return data.valid;
-  //   } catch (error) {
-  //     console.error("Validation error:", error);
-  //     return false;
-  //   }
-  // };
+  // Validate word (local version; replace with Gemini API if needed)
   const isWordValid = (word: string): boolean => {
-    word=targetValue;
-    console.log(word);
-    return words.valid.includes(guess.toLowerCase()) || words.words.includes(guess.toLowerCase());
+    const lower = word.toLowerCase();
+    return words.valid.includes(lower) || words.words.includes(lower);
   };
 
-  // UPDATED: handleClick is now async for Gemini call
-  const handleClick = async () => {
-    if (guess.length !== 5) return;
-    if (likes >= 6) return;
+  const handleClick = async (): Promise<void> => {
+    if (guess.length !== 5 || likes >= 6) return;
 
-    const valid = await isWordValid(guess);
+    const valid = isWordValid(guess);
     if (!valid) {
       setResult("invalid input");
       return;
     }
 
-    setLikes(likes + 1);
+    setLikes((prev) => prev + 1);
     setGrid((prevGrid) => [...prevGrid, guess]);
     setGuess("");
     updateUsedLetters(guess);
@@ -61,11 +40,10 @@ const Hackle = () => {
 
     if (guess === targetValue) {
       setResult("YOU WIN");
-      return;
     }
   };
 
-  const updateUsedLetters = (currentGuess: string) => {
+  const updateUsedLetters = (currentGuess: string): void => {
     const newUsedLetters = { ...usedLetters };
 
     currentGuess.split("").forEach((letter, index) => {
@@ -82,7 +60,7 @@ const Hackle = () => {
     setUsedLetters(newUsedLetters);
   };
 
-  const getLetterColor = (letter: string, index: number) => {
+  const getLetterColor = (letter: string, index: number): string => {
     if (targetValue[index] === letter) {
       return "bg-green-500";
     } else if (targetValue.includes(letter)) {
@@ -91,7 +69,7 @@ const Hackle = () => {
     return "bg-gray-500";
   };
 
-  const handleKeyboardClick = (key: string) => {
+  const handleKeyboardClick = (key: string): void => {
     if (key === "ENTER") {
       handleClick();
     } else if (key === "DELETE") {
@@ -103,56 +81,49 @@ const Hackle = () => {
 
   return (
     <div className="relative min-h-screen bg-white text-black flex flex-col items-center justify-center overflow-hidden">
-    {/* Background */}
-    <BinaryBackground />
+      <BinaryBackground />
 
-    {/* Game Content in Front */}
       <div className="relative z-10">
-      <h3 className="text-2xl font-semibold mb-4">Your Guesses:</h3>
+        <h3 className="text-2xl font-semibold mb-4">Your Guesses:</h3>
 
-      {/* UI: Grid display */}
-      <ul className="space-y-2">
-        {grid.map((guess, index) => (
-          <li key={index} className="flex gap-2 justify-center">
-            {guess.split("").map((letter, i) => (
-              <span
-                key={i}
-                className={`text-white p-3 rounded-md text-lg font-bold ${getLetterColor(letter, i)}`}
-              >
-                {letter}
-              </span>
-            ))}
-          </li>
-        ))}
-      </ul>
+        <ul className="space-y-2">
+          {grid.map((word, index) => (
+            <li key={index} className="flex gap-2 justify-center">
+              {word.split("").map((letter, i) => (
+                <span
+                  key={i}
+                  className={`text-white p-3 rounded-md text-lg font-bold ${getLetterColor(letter, i)}`}
+                >
+                  {letter}
+                </span>
+              ))}
+            </li>
+          ))}
+        </ul>
 
-      {/* Input Field */}
-      <input
-        value={guess}
-        onChange={(e) => setGuess(e.target.value.toUpperCase())}
-        onKeyDown={(e) => e.key === "Enter" && handleClick()}
-        placeholder="Guess here"
-        type="text"
-        id="guess"
-        className="mt-4 p-2 border-2 border-gray-400 rounded-md text-black w-40 text-center"
-      />
+        <input
+          value={guess}
+          onChange={(e) => setGuess(e.target.value.toUpperCase())}
+          onKeyDown={(e) => e.key === "Enter" && handleClick()}
+          placeholder="Guess here"
+          type="text"
+          id="guess"
+          className="mt-4 p-2 border-2 border-gray-400 rounded-md text-black w-40 text-center"
+        />
 
-      {/* Submit Button */}
-      <button
-        className="mt-4 bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-lg"
-        onClick={handleClick}
-      >
-        Likes ({likes})
-      </button>
+        <button
+          className="mt-4 bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-lg"
+          onClick={handleClick}
+        >
+          Likes ({likes})
+        </button>
 
-      {/* Result */}
-      <p className="mt-4 text-lg font-bold">{result}</p>
+        <p className="mt-4 text-lg font-bold">{result}</p>
 
-      {/* Keyboard */}
-      <div className="mt-6 w-full max-w-md">
-        <Keyboard onkeyPress={handleKeyboardClick} usedLetters={usedLetters} />
+        <div className="mt-6 w-full max-w-md">
+          <Keyboard onkeyPress={handleKeyboardClick} usedLetters={usedLetters} />
+        </div>
       </div>
-    </div>
     </div>
   );
 };
