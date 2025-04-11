@@ -5,7 +5,7 @@ import styles from '../styles/Home.module.css';
 import wordList from '../utils/wordList'; // Predefined list of words
 
 const WordleGame = () => {
-  const [targetWord, setTargetWord] = useState(''); //target stored
+  // const [targetWord, setTargetWord] = useState(''); //target stored
   const [guesses, setGuesses] = useState([]);
   const [currentGuess, setCurrentGuess] = useState('');
 
