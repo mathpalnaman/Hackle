@@ -33,6 +33,8 @@ const Hackle = () => {
   //   }
   // };
   const isWordValid = (word: string): boolean => {
+    word=targetValue;
+    console.log(word);
     return words.valid.includes(guess.toLowerCase()) || words.words.includes(guess.toLowerCase());
   };
 

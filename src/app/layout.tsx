@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+
 import localFont from "next/font/local";
 import "./styles/globals.css";
 import { UserProvider } from '@auth0/nextjs-auth0/client';

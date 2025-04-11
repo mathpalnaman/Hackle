@@ -1,6 +1,6 @@
 // currently running directly with hackle and later will run with maingame
-import mainGame from "./mainGame/page";
-import GameBoard from "../components/GameBoard";
+// import mainGame from "./mainGame/page";
+// import GameBoard from "../components/GameBoard";
 import Hackle from "./Hackle/page";
 export default function Home() {
   return (

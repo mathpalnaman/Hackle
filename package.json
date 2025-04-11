@@ -9,7 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@auth0/nextjs-auth0": "^3.5.0",
+    
     "@google/generative-ai": "^0.24.0",
     "next": "^15.2.4",
     "react": "19.0.0-rc-69d4b800-20241021",
