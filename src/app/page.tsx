@@ -2,14 +2,17 @@
 // import mainGame from "./mainGame/page";
 // import GameBoard from "../components/GameBoard";
 import Hackle from "./Hackle/page";
+
 export default function Home() {
   return (
-    <div className="grid grid-rows-[20px_1fr_20px]  min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <h1 className="font-extrabold text-5xl font-mono tracking-widest text-center">
+    <main className="min-h-screen flex flex-col items-center p-4">
+      <h1 className="font-mono text-6xl font-bold text-center mb-8 text-blue-400">
         Hackle
-        <Hackle/>
       </h1>
-    </div>
+      <div className="flex-1 flex items-center justify-center">
+        <Hackle />
+      </div>
+    </main>
     // <div>
     //   <Hackle />
     // </div>

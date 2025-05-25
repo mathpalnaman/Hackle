@@ -17,38 +17,38 @@ const Keyboard = ({ onkeyPress, usedLetters }) => {
 
   //  UPDATED FUNCTION: Now applies the correct styles dynamically
   const getKeyStyle = (letter) => {
-    if (usedLetters[letter] === "green") return "bg-green-500 text-white";
-    if (usedLetters[letter] === "yellow") return "bg-yellow-500 text-white";
-    if (usedLetters[letter] === "gray") return "bg-gray-500 text-white";
-    return "bg-gray-600 text-white"; // Default color for unused letters
+    if (usedLetters[letter] === "green") return "bg-green-500 text-white shadow-lg shadow-green-500/30";
+    if (usedLetters[letter] === "yellow") return "bg-yellow-500 text-white shadow-lg shadow-yellow-500/30";
+    if (usedLetters[letter] === "gray") return "bg-gray-500 text-white shadow-lg shadow-gray-500/30";
+    return "bg-gray-600/80 text-white hover:bg-gray-500/80 transition-colors"; // Default color for unused letters
   };
   
 
   return (
-    <div className="keyboard">
+    <div className="keyboard mt-8">
       {rows.map((row, rowIndex) => (
-        <div key={rowIndex} className="flex justify-center space-x-2 my-1">
+        <div key={rowIndex} className="flex justify-center space-x-1.5 my-1.5">
           {row.map((letter) => (
             <button
               key={letter}
               onClick={() => onkeyPress(letter)}
-              className={`p-2 rounded ${getKeyStyle(letter)}`}
+              className={`px-3 py-2.5 rounded-md font-medium text-sm ${getKeyStyle(letter)}`}
             >
               {letter}
             </button>
           ))}
         </div>
       ))}
-      <div className="flex justify-center space-x-2 my-1">
+      <div className="flex justify-center space-x-2 my-2">
         <button
           onClick={() => onkeyPress("ENTER")}
-          className="p-2 bg-blue-500 text-white rounded"
+          className="px-4 py-2.5 bg-blue-500 text-white rounded-md font-medium text-sm hover:bg-blue-600 transition-colors shadow-lg shadow-blue-500/30"
         >
           ENTER
         </button>
         <button
           onClick={() => onkeyPress("DELETE")}
-          className="p-2 bg-red-500 text-white rounded"
+          className="px-4 py-2.5 bg-red-500 text-white rounded-md font-medium text-sm hover:bg-red-600 transition-colors shadow-lg shadow-red-500/30"
         >
           DELETE
         </button>
